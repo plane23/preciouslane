@@ -1,0 +1,143 @@
+ def int size()
+    {
+        return cards.size()
+    }
+
+    def deal()
+    {
+        if(isEmpty())
+        {
+            return null
+        }
+        else
+        {
+            return cards.remove(cards.size() -1)
+        }
+    }
+
+    def deal(int number)
+    {
+        if (number > cards.size())
+        {
+            return null
+        }
+        else
+        {
+            def hand = []
+            for(int i = 0; i < number; i++)
+            {
+                hand[i] = deal()
+            }
+            return hand
+        }
+    }
+    
+    def void shuffle()
+    {
+        Collections.shuffle(cards)
+    }
+
+    // The original inefficient hunt and peck shuffle algorithm
+    /*
+    def void shuffle()
+    {
+        if (cards.size() < MAX_SIZE)
+        {
+            println "Couldn't shuffle. There are only " + cards.size() + " cards!"
+            return
+        }
+        Random gen = new Random()
+        def shuffled = []
+        while (cards.size() > 0)
+        {
+            Card card = cards.remove(cards.size() - 1)
+            int i = gen.nextInt(MAX_SIZE)
+            while (shuffled[i] != null)
+            {
+                i = gen.nextInt(MAX_SIZE)
+            }                
+            shuffled[i] = card
+        }
+        // Put all the shuffled cards back in the original list
+        // TODO: Shouldn't we just do cards = shuffled ?
+        for (Card card : shuffled)
+        {
+            cards.add(card)
+        }
+    }
+    */
+
+    def String toString()
+    {
+        String result = ""
+        for(Card card : cards)
+        {
+            result += card.toString() + "\n"
+        }
+        return result
+    }
+}
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------
+
+import Deck
+
+def deck = new Deck()
+
+deck.shuffle()
+println deck
+
+println "Re-Shuffle"
+deck.shuffle()
+println deck
+
+println "Re-Shuffle and Deal All Cards"
+deck.shuffle()
+while(!deck.isEmpty())
+{
+    Card aCard = deck.deal()
+    println(aCard)
+}
+
+println "Re-Shuffle and Deal 9 cards to 2 players"
+int numPlayers = 2
+deck.reset()
+deck.shuffle()
+for(int player=0; player<numPlayers; player++)
+{
+    Card[] hand = deck.deal(9)
+    println(hand)
+}
+-------------------------------------------------------------
+class TwentyOneCard extends Card
+{
+    /**
+     * Constructor
+     * rank can be 2, 3, ..., 10, JACK, QUEEN, KING, ACE
+     * suit can be CLUBS, DIAMONDS, HEARTS, SPADES
+     */
+    public TwentyOneCard (int rank, Suit suit)
+    {
+        super(rank, suit)
+    }
+
+    def int getRank()
+    {
+        if (rank ==  10, ACE)
+        {
+            return 11
+        }
+        if (rank > 10)
+        {
+            return 10
+        }
+        return rank
+    }
